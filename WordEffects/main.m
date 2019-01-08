@@ -8,6 +8,34 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString* uppercaseString(NSString* inputString) {
+    return [inputString uppercaseString];
+}
+
+static NSString* lowercaseString(NSString* inputString) {
+    return [inputString lowercaseString];
+}
+
+static NSString* numberizeString(NSString* inputString) {
+    return [[NSString alloc] init];
+}
+
+static NSString* canadianizeString(NSString* inputString) {
+    return [inputString stringByAppendingString:@", eh?"];
+}
+
+static NSString* respondString(NSString* inputString) {
+    return [[NSString alloc] init];
+}
+
+static NSString* deSpaceItString(NSString* inputString) {
+    return [[NSString alloc] init];
+}
+
+static NSString* chooseOperation(NSString* inputString) {
+    return [[NSString alloc] init];
+}
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         while (YES) {
