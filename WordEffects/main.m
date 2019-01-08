@@ -8,37 +8,76 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString* uppercaseString(NSString* inputString) {
-    return [inputString uppercaseString];
-}
-
-static NSString* lowercaseString(NSString* inputString) {
-    return [inputString lowercaseString];
-}
-
-static NSString* numberizeString(NSString* inputString) {
-    return [[NSString alloc] init];
-}
-
-static NSString* canadianizeString(NSString* inputString) {
-    return [inputString stringByAppendingString:@", eh?"];
-}
-
-static NSString* respondString(NSString* inputString) {
-    return [[NSString alloc] init];
-}
-
-static NSString* deSpaceItString(NSString* inputString) {
-    return [[NSString alloc] init];
-}
-
-static NSString* chooseOperation(NSString* inputString) {
-    return [[NSString alloc] init];
+static NSString* chooseOperation(NSString* inputString, NSString* inputOperation) {
+    
+    NSString* newString;
+    NSString* numberString;
+    switch([inputOperation integerValue]) {
+        // 1. Uppercase
+        case 1:
+            newString = [inputString uppercaseString];
+            break;
+        // 2. Lowercase
+        case 2:
+            newString = [inputString lowercaseString];
+            break;
+        // 3. Numberize
+        case 3:
+            numberString = [inputString substringToIndex:([inputString length] - 1)];
+            int number = [numberString intValue];
+            if(number == 0) {
+                if(![numberString isEqualToString:@"0"]) {
+                    newString = @"Not a valid number";
+                } else {
+                    newString = numberString;
+                }
+            } else {
+                newString = numberString;
+            }
+            break;
+        // 4. Candianize
+        case 4:
+            newString = [inputString stringByReplacingCharactersInRange:NSMakeRange([inputString length] - 1, 1) withString:@", eh?"];
+            break;
+        // 5. Respond
+        case 5:
+            if([inputString characterAtIndex:([inputString length] - 2)] == '?') {
+                newString = @"I don't know";
+            } else if([inputString characterAtIndex:([inputString length] - 2)] == '!') {
+                newString = @"Whoa, calm down!";
+            } else {
+                newString = @"Invalid string for respond operation";
+            }
+            break;
+        // 6. De-Space-It
+        case 6:
+            newString = [inputString stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+            break;
+        default:
+            newString = @"Invalid operation";
+            break;
+    }
+    NSLog(@"New string value is: %@", newString);
+    NSLog(@"New string address is: %p", newString);
+    
+    return newString;
 }
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         while (YES) {
+            char inputOperationChars[255];
+            
+            printf("Input an operation: ");
+            fgets(inputOperationChars, 255, stdin);
+            
+            printf("Your opeartion is %s\n", inputOperationChars);
+            
+            NSString *inputOperation = [NSString stringWithUTF8String:inputOperationChars];
+            NSLog(@"Input opeartion was: %@", inputOperation);
+            
+            NSLog(@"Input operation address is: %p", inputOperation);
+            
             // 255 unit long array of characters
             char inputChars[255];
             
@@ -56,6 +95,10 @@ int main(int argc, const char * argv[]) {
             NSLog(@"Input was: %@", inputString);
             
             NSLog(@"Input string address is: %p", inputString);
+            
+            NSString* outputString = chooseOperation(inputString, inputOperation);
+            
+            NSLog(@"Output is: %@", outputString);
         }
     }
     return 0;
