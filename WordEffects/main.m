@@ -13,7 +13,7 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
     NSMutableString* newString;
     NSMutableString* numberString;
     int number;
-    NSString* subString;
+    NSMutableString* subString;
     switch([inputOperation integerValue]) {
         // 1. Uppercase
         case 1:
@@ -69,7 +69,7 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
         case 8:
             newString = [[NSMutableString alloc] initWithString:@""];
             for(int i = 0; i < [inputString length]; i++) {
-                subString = [inputString substringWithRange:NSMakeRange(i, 1)];
+                subString = [[NSMutableString alloc] initWithString:[inputString substringWithRange:NSMakeRange(i, 1)]];
                 [newString appendString: [subString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
             }
             break;
@@ -77,7 +77,7 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
         case 9:
             newString = [[NSMutableString alloc] initWithString:@""];
             for(int i = 0; i < [inputString length]; i++) {
-                subString = [inputString substringWithRange:NSMakeRange(i, 1)];
+                subString = [[NSMutableString alloc] initWithString:[inputString substringWithRange:NSMakeRange(i, 1)]];
                 if([[subString stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]] isEqual: @""]) {
                     [newString appendString:@"🧂"];
                 } else {
