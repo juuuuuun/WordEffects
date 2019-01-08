@@ -14,6 +14,7 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
     NSString* numberString;
     int number;
     NSString* newNumberString = @"";
+    NSString* subString;
     switch([inputOperation integerValue]) {
         // 1. Uppercase
         case 1:
@@ -57,6 +58,30 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
         // 6. De-Space-It
         case 6:
             newString = [inputString stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+            break;
+        // 7. Letter count
+        case 7:
+            newString = [[NSString alloc] initWithFormat:@"Letter count of input string is: %lu", ([inputString length] - 1)];
+            break;
+        // 8. Punctuation removal
+        case 8:
+            newString = @"";
+            for(int i = 0; i < [inputString length]; i++) {
+                subString = [inputString substringWithRange:NSMakeRange(i, 1)];
+                newString = [newString stringByAppendingString: [subString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+            }
+            break;
+        // 9. Replace with emojis
+        case 9:
+            newString = @"";
+            for(int i = 0; i < [inputString length]; i++) {
+                subString = [inputString substringWithRange:NSMakeRange(i, 1)];
+                if([[subString stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]] isEqual: @""]) {
+                    newString = [newString stringByAppendingString:@"🧂"];
+                } else {
+                    newString = [newString stringByAppendingString:subString];
+                }
+            }
             break;
         default:
             newString = @"Invalid operation";
