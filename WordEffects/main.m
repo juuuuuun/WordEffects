@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-static NSString* chooseOperation(NSString* inputString, NSString* inputOperation) {
+static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableString* inputOperation) {
     
     NSString* newString;
     NSString* numberString;
@@ -103,7 +103,7 @@ int main(int argc, const char * argv[]) {
             
             printf("Your opeartion is %s\n", inputOperationChars);
             
-            NSString *inputOperation = [NSString stringWithUTF8String:inputOperationChars];
+            NSMutableString *inputOperation = [NSMutableString stringWithUTF8String:inputOperationChars];
             NSLog(@"Input opeartion was: %@", inputOperation);
             
             NSLog(@"Input operation address is: %p", inputOperation);
@@ -119,14 +119,14 @@ int main(int argc, const char * argv[]) {
             printf("Your string is %s\n", inputChars);
             
             // convert char array to an NSString object
-            NSString *inputString = [NSString stringWithUTF8String:inputChars];
+            NSMutableString *inputString = [NSMutableString stringWithUTF8String:inputChars];
             
             // print NSString object
             NSLog(@"Input was: %@", inputString);
             
             NSLog(@"Input string address is: %p", inputString);
             
-            NSString* outputString = chooseOperation(inputString, inputOperation);
+            NSMutableString* outputString = chooseOperation(inputString, inputOperation);
             
             NSLog(@"Output is: %@", outputString);
         }
