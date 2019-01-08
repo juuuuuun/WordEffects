@@ -26,12 +26,19 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
             break;
         // 3. Numberize
         case 3:
+            // Delete the newline character to convert into intValue properly
             numberString = [inputString substringToIndex:([inputString length] - 1)];
             number = [numberString intValue];
+    
+            // numberString is used to fill in 0's the same length as the input string in case the input string is numerically 0
             for(int i = 0; i < [numberString length]; i++) {
                 newNumberString = [newNumberString stringByAppendingString:@"0"];
             }
+            // If intValue of input string is 0, either input string is numerically 0,
+            //  or it does not have numerical value.
             if(number == 0) {
+                // This condition checks whether the number string is the same as the input string
+                // If they are the same, the input string is numerically 0 (with zero or more leading 0's)
                 if(![numberString isEqual:newNumberString]) {
                     newString = @"Not a valid number";
                 } else {
@@ -65,11 +72,7 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
             break;
         // 8. Punctuation removal
         case 8:
-            newString = @"";
-            for(int i = 0; i < [inputString length]; i++) {
-                subString = [inputString substringWithRange:NSMakeRange(i, 1)];
-                newString = [newString stringByAppendingString: [subString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
-            }
+            newString = [[inputString componentsSeparatedByCharactersInSet:[NSCharacterSet punctuationCharacterSet]] componentsJoinedByString:@""];
             break;
         // 9. Replace with emojis
         case 9:
@@ -96,18 +99,6 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         while (YES) {
-            char inputOperationChars[255];
-            
-            printf("Input an operation: ");
-            fgets(inputOperationChars, 255, stdin);
-            
-            printf("Your opeartion is %s\n", inputOperationChars);
-            
-            NSString *inputOperation = [NSString stringWithUTF8String:inputOperationChars];
-            NSLog(@"Input opeartion was: %@", inputOperation);
-            
-            NSLog(@"Input operation address is: %p", inputOperation);
-            
             // 255 unit long array of characters
             char inputChars[255];
             
@@ -125,6 +116,33 @@ int main(int argc, const char * argv[]) {
             NSLog(@"Input was: %@", inputString);
             
             NSLog(@"Input string address is: %p", inputString);
+            
+            NSLog(@"Here are the list of operations you could use on the input string: ");
+            NSLog(@"1. Turn all letters in the input string into their uppercase form");
+            NSLog(@"2. Turn all letters in the input string into their lowercase form");
+            NSLog(@"3. Return the string if the string is recognizable as an integer,");
+            NSLog(@" otherwise, return 'Not a valid number' error message");
+            NSLog(@"4. Canadianize the string by attaching ', eh?' at the end");
+            NSLog(@"5. Respond to your input string by");
+            NSLog(@" returning 'I don't know' message if the input string ends with '?' character,");
+            NSLog(@" returning 'Whoa, calm down!' message if the input string ends with '!' character,");
+            NSLog(@" or returning an error message otherwise");
+            NSLog(@"6. De-Space by replacing all space characters with '-' character");
+            NSLog(@"7. Return the number of characers in the input string");
+            NSLog(@"8. Return the input string with all punctuation characters removed");
+            NSLog(@"9. Return the input string with all letter characters replaced by 🧂 charater");
+            
+            NSLog(@"\nChoose your operation: ");
+            
+            char inputOperationChars[255];
+            fgets(inputOperationChars, 255, stdin);
+            
+            printf("Your opeartion is %s\n", inputOperationChars);
+            
+            NSString *inputOperation = [NSString stringWithUTF8String:inputOperationChars];
+            NSLog(@"Input opeartion was: %@", inputOperation);
+            
+            NSLog(@"Input operation address is: %p", inputOperation);
             
             NSString* outputString = chooseOperation(inputString, inputOperation);
             
