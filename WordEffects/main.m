@@ -10,81 +10,83 @@
 
 static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableString* inputOperation) {
     
-    NSString* newString;
-    NSString* numberString;
+    NSMutableString* newString;
+    NSMutableString* numberString;
     int number;
-    NSString* newNumberString = @"";
     NSString* subString;
     switch([inputOperation integerValue]) {
         // 1. Uppercase
         case 1:
-            newString = [inputString uppercaseString];
+            newString = [[NSMutableString alloc] initWithString:[inputString uppercaseString]];
             break;
         // 2. Lowercase
         case 2:
-            newString = [inputString lowercaseString];
+            newString = [[NSMutableString alloc] initWithString:[inputString lowercaseString]];
             break;
         // 3. Numberize
         case 3:
-            numberString = [inputString substringToIndex:([inputString length] - 1)];
-            number = [numberString intValue];
-            for(int i = 0; i < [numberString length]; i++) {
-                newNumberString = [newNumberString stringByAppendingString:@"0"];
+            [inputString deleteCharactersInRange:NSMakeRange([inputString length] - 1, 1)];
+            number = [inputString intValue];
+            numberString = [[NSMutableString alloc] initWithString:@""];
+            for(int i = 0; i < [inputString length]; i++) {
+                [numberString appendString:@"0"];
             }
             if(number == 0) {
-                if(![numberString isEqual:newNumberString]) {
-                    newString = @"Not a valid number";
+                if(![inputString isEqual:numberString]) {
+                    newString = [[NSMutableString alloc] initWithString:@"Not a valid number"];
                 } else {
-                    newString = numberString;
+                    newString = inputString;
                 }
             } else {
-                newString = numberString;
+                newString = inputString;
             }
             break;
         // 4. Candianize
         case 4:
-            newString = [inputString stringByReplacingCharactersInRange:NSMakeRange([inputString length] - 1, 1) withString:@", eh?"];
+            [inputString replaceCharactersInRange:NSMakeRange([inputString length] - 1, 1) withString:@", eh?"];
+            newString = inputString;
             break;
         // 5. Respond
         case 5:
             if([inputString characterAtIndex:([inputString length] - 2)] == '?') {
-                newString = @"I don't know";
+                newString = [[NSMutableString alloc] initWithString:@"I don't know"];
             } else if([inputString characterAtIndex:([inputString length] - 2)] == '!') {
-                newString = @"Whoa, calm down!";
+                newString = [[NSMutableString alloc] initWithString:@"Whoa, calm down!"];
             } else {
-                newString = @"Invalid string for respond operation";
+                newString = [[NSMutableString alloc] initWithString:@"Invalid string for respond operation"];
             }
             break;
         // 6. De-Space-It
         case 6:
-            newString = [inputString stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+            [inputString replaceOccurrencesOfString:@" " withString:@"-" options:NSLiteralSearch range:NSMakeRange(0, [inputString length])];
+            newString = inputString;
             break;
         // 7. Letter count
         case 7:
-            newString = [[NSString alloc] initWithFormat:@"Letter count of input string is: %lu", ([inputString length] - 1)];
+            newString = [[NSMutableString alloc] initWithFormat:@"Letter count of input string is: %lu", ([inputString length] - 1)];
             break;
         // 8. Punctuation removal
         case 8:
-            newString = @"";
+            newString = [[NSMutableString alloc] initWithString:@""];
             for(int i = 0; i < [inputString length]; i++) {
                 subString = [inputString substringWithRange:NSMakeRange(i, 1)];
-                newString = [newString stringByAppendingString: [subString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
+                [newString appendString: [subString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
             }
             break;
         // 9. Replace with emojis
         case 9:
-            newString = @"";
+            newString = [[NSMutableString alloc] initWithString:@""];
             for(int i = 0; i < [inputString length]; i++) {
                 subString = [inputString substringWithRange:NSMakeRange(i, 1)];
                 if([[subString stringByTrimmingCharactersInSet:[NSCharacterSet letterCharacterSet]] isEqual: @""]) {
-                    newString = [newString stringByAppendingString:@"🧂"];
+                    [newString appendString:@"🧂"];
                 } else {
-                    newString = [newString stringByAppendingString:subString];
+                    [newString appendString:subString];
                 }
             }
             break;
         default:
-            newString = @"Invalid operation";
+            newString = [[NSMutableString alloc] initWithString:@"Invalid operation"];
             break;
     }
     NSLog(@"New string value is: %@", newString);
