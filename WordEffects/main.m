@@ -25,13 +25,22 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
             break;
         // 3. Numberize
         case 3:
+            // Delete the newline character to convert into intValue properly
             [inputString deleteCharactersInRange:NSMakeRange([inputString length] - 1, 1)];
             number = [inputString intValue];
+            
+            // numberString is used to fill in 0's the same length as the input string in case the input string is numerically 0
             numberString = [[NSMutableString alloc] initWithString:@""];
             for(int i = 0; i < [inputString length]; i++) {
                 [numberString appendString:@"0"];
             }
+            
+            // If intValue of input string is 0, either input string is numerically 0,
+            //  or it does not have numerical value.
             if(number == 0) {
+                
+                // This condition checks whether the number string is the same as the input string
+                // If they are the same, the input string is numerically 0 (with zero or more leading 0's)
                 if(![inputString isEqual:numberString]) {
                     newString = [[NSMutableString alloc] initWithString:@"Not a valid number"];
                 } else {
@@ -48,6 +57,7 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
             break;
         // 5. Respond
         case 5:
+            // These if conditions are checking for second last character, since the input string will attach newline character at the end by default
             if([inputString characterAtIndex:([inputString length] - 2)] == '?') {
                 newString = [[NSMutableString alloc] initWithString:@"I don't know"];
             } else if([inputString characterAtIndex:([inputString length] - 2)] == '!') {
@@ -67,11 +77,7 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
             break;
         // 8. Punctuation removal
         case 8:
-            newString = [[NSMutableString alloc] initWithString:@""];
-            for(int i = 0; i < [inputString length]; i++) {
-                subString = [[NSMutableString alloc] initWithString:[inputString substringWithRange:NSMakeRange(i, 1)]];
-                [newString appendString: [subString stringByTrimmingCharactersInSet:[NSCharacterSet punctuationCharacterSet]]];
-            }
+            newString = [[NSMutableString alloc] initWithString:[[inputString componentsSeparatedByCharactersInSet:[NSCharacterSet punctuationCharacterSet]] componentsJoinedByString:@""]];
             break;
         // 9. Replace with emojis
         case 9:
@@ -98,18 +104,6 @@ static NSMutableString* chooseOperation(NSMutableString* inputString, NSMutableS
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         while (YES) {
-            char inputOperationChars[255];
-            
-            printf("Input an operation: ");
-            fgets(inputOperationChars, 255, stdin);
-            
-            printf("Your opeartion is %s\n", inputOperationChars);
-            
-            NSMutableString *inputOperation = [NSMutableString stringWithUTF8String:inputOperationChars];
-            NSLog(@"Input opeartion was: %@", inputOperation);
-            
-            NSLog(@"Input operation address is: %p", inputOperation);
-            
             // 255 unit long array of characters
             char inputChars[255];
             
@@ -128,6 +122,34 @@ int main(int argc, const char * argv[]) {
             
             NSLog(@"Input string address is: %p", inputString);
             
+            NSLog(@"Here are the list of operations you could use on the input string: ");
+            NSLog(@"1. Turn all letters in the input string into their uppercase form");
+            NSLog(@"2. Turn all letters in the input string into their lowercase form");
+            NSLog(@"3. Return the string if the string is recognizable as an integer,");
+            NSLog(@" otherwise, return 'Not a valid number' error message");
+            NSLog(@"4. Canadianize the string by attaching ', eh?' at the end");
+            NSLog(@"5. Respond to your input string by");
+            NSLog(@" returning 'I don't know' message if the input string ends with '?' character,");
+            NSLog(@" returning 'Whoa, calm down!' message if the input string ends with '!' character,");
+            NSLog(@" or returning an error message otherwise");
+            NSLog(@"6. De-Space by replacing all space characters with '-' character");
+            NSLog(@"7. Return the number of characers in the input string");
+            NSLog(@"8. Return the input string with all punctuation characters removed");
+            NSLog(@"9. Return the input string with all letter characters replaced by 🧂 charater");
+            
+            NSLog(@"\nChoose your operation: ");
+            
+            char inputOperationChars[255];
+            fgets(inputOperationChars, 255, stdin);
+            
+            printf("Your opeartion is %s\n", inputOperationChars);
+            
+            NSMutableString *inputOperation = [NSMutableString stringWithUTF8String:inputOperationChars];
+            NSLog(@"Input opeartion was: %@", inputOperation);
+            
+            NSLog(@"Input operation address is: %p", inputOperation);
+            
+                  
             NSMutableString* outputString = chooseOperation(inputString, inputOperation);
             
             NSLog(@"Output is: %@", outputString);
