@@ -12,6 +12,8 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
     
     NSString* newString;
     NSString* numberString;
+    int number;
+    NSString* newNumberString = @"";
     switch([inputOperation integerValue]) {
         // 1. Uppercase
         case 1:
@@ -24,9 +26,12 @@ static NSString* chooseOperation(NSString* inputString, NSString* inputOperation
         // 3. Numberize
         case 3:
             numberString = [inputString substringToIndex:([inputString length] - 1)];
-            int number = [numberString intValue];
+            number = [numberString intValue];
+            for(int i = 0; i < [numberString length]; i++) {
+                newNumberString = [newNumberString stringByAppendingString:@"0"];
+            }
             if(number == 0) {
-                if(![numberString isEqualToString:@"0"]) {
+                if(![numberString isEqual:newNumberString]) {
                     newString = @"Not a valid number";
                 } else {
                     newString = numberString;
